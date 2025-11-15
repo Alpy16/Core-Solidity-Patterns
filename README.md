@@ -1,1 +1,1 @@
-A lightweight toolkit of Solidity libraries and interfaces built to stay sharp with core contract development patterns.
+A lightweight toolkit of Solidity libraries and interfaces built to stay sharp with core contract development patterns. 

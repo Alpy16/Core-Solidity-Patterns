@@ -8,6 +8,7 @@ contract Ownable {
         address indexed previousOwner,
         address indexed newOwner
     );
+    event OwnershipReleased(address indexed previousOwner);
     error ZeroAddressNotAllowed();
     error CallerIsNotOwner();
 
@@ -21,15 +22,19 @@ contract Ownable {
         _;
     }
 
-    fucntion transferOwnership (address newOwner) public onlyOwner {
+    function transferOwnership(address newOwner) public onlyOwner {
         if (newOwner == address(0)) revert ZeroAddressNotAllowed();
         emit OwnershipTransferred(_owner, newOwner);
         _owner = newOwner;
     }
 
-    function getOwner() public view returns (address) { // normally the name for this function is owner() because most frameworks (etherscan,ABI tooling etc.)recognise it automatically.
+    function getOwner() public view returns (address) {
+        // normally the name for this function is owner() because most frameworks (etherscan,ABI tooling etc.)recognise it automatically.
         return _owner;
     }
 
-
+    function releaseOwnership() public onlyOwner {
+        emit OwnershipReleased(_owner);
+        _owner = address(0);
+    }
 }
