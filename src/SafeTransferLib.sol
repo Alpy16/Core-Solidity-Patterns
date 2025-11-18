@@ -1,17 +1,7 @@
 //SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-interface IERC20 {
-    function transfer(address to, uint256 amount) external returns (bool);
-
-    function transferFrom(
-        address from,
-        address to,
-        uint256 amount
-    ) external returns (bool);
-
-    function approve(address spender, uint256 amount) external returns (bool);
-}
+import "./interfaces/IERC20.sol";
 
 library SafeTransferLib {
     error EthTransferFailed();
@@ -56,5 +46,25 @@ library SafeTransferLib {
         uint256 currentAllowance = token.allowance(address(this), spender);
         bool success = token.approve(spender, currentAllowance + amount);
         if (!success) revert ERC20ApproveFailed();
+    }
+
+    function sqrt(uint256 x) internal pure returns (uint256 z) {
+        if (x == 0) return 0;
+
+        // Initial guess: 2^(log2(x) / 2)
+        z = 1 << (log2(x) >> 1);
+
+        // Newton iterations – 7 is enough for full 256-bit convergence
+        for (uint256 i = 0; i < 7; i++) {
+            z = (z + x / z) >> 1;
+        }
+    }
+
+    function log2(uint256 x) internal pure returns (uint256 y) {
+        //just a helper function for sqrt
+        while (x > 1) {
+            x >>= 1;
+            y++;
+        }
     }
 }
